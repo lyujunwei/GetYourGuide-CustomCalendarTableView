@@ -72,7 +72,7 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
         [dateFormatter setDateFormat:@"EEE"];
         NSString *dayInWeekFormattedString = [dateFormatter stringFromDate:date];
         
-        [dateFormatter setDateFormat:@"MMM"];
+        [dateFormatter setDateFormat:@"MM"];
         NSString *monthFormattedString = [[dateFormatter stringFromDate:date] uppercaseString];
         
         if (index == 0) {
@@ -164,7 +164,7 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
 
 - (UIView*)tableView:(TRoadCalendarTableView *)calendarTableView viewForHeaderInSection:(NSInteger)section{
     _calendarHeaderView = [[CalendarHeaderView alloc]initWithFrame:CGRectMake(0, 0, 26, 44)];
-    _calendarHeaderView.title = [NSString stringWithFormat:@"%@",months[section]];
+    _calendarHeaderView.title = [NSString stringWithFormat:@"%@月",months[section]];
     return _calendarHeaderView;
 }
 
@@ -178,16 +178,6 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
     NSIndexPath *index = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     [calendarTableView.tableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
-    NSString *string = months[indexPath.section];
-    int b= [[string substringWithRange:NSMakeRange(0,[string length] - 1)] intValue];
-    
-    NSString *monthString;
-    if ( b < 10 ) {
-        monthString = [NSString stringWithFormat:@"0%d",b];
-    } else {
-        monthString = [NSString stringWithFormat:@"%d",b];
-    }
-
     NSInteger day;
     if (indexPath.section == 0) {
         day = indexPath.row + todayDate;
@@ -195,14 +185,7 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
         day = indexPath.row + 1;
     }
     
-    NSString *dayString;
-    if (day < 10) {
-        dayString = [NSString stringWithFormat:@"0%ld",(long)day];
-    } else {
-        dayString = [NSString stringWithFormat:@"%ld",(long)day];
-    }
-    
-    time = [NSString stringWithFormat:@"%@%@%@",[yearDict valueForKey:months[indexPath.section]][indexPath.row],monthString,dayString];
+    time = [NSString stringWithFormat:@"%@%@%@",[yearDict valueForKey:months[indexPath.section]][indexPath.row],months[indexPath.section],[self formatDate:day]];
 
     NSLog(@"你选中 -> %@",time );
     
@@ -219,6 +202,17 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
     cell.dayLabel.textColor = RGB(192, 192, 192);
     cell.dateLabel.textColor = RGB(0, 0, 0);
     [calendarTableView.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSString *)formatDate:(NSInteger)num
+{
+    NSString *string;
+    if ( num < 10 ) {
+        string = [NSString stringWithFormat:@"0%ld",(long)num];
+    } else {
+        string = [NSString stringWithFormat:@"%ld",(long)num];
+    }
+    return string;
 }
 
 @end
