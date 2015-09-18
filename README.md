@@ -1,3 +1,3 @@
 # GetYourGuide-CustomCalendarTableView
 
-> 模仿国外应用GetYourGuide，横向滑动选择日历
+> Imitation of foreign application GetYourGuide, lateral sliding select Calendar
